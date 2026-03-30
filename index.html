@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Erase Image Tool</title>
+  <title>Erase & Preview Tool</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Erase & Download Image</h2>
+<h2>Erase → Preview → Download</h2>
 
 <input type="file" id="upload" />
-<button onclick="downloadImage()">Download</button>
+<br><br>
 
 <canvas id="canvas"></canvas>
+
+<h3>Preview (Updated Image)</h3>
+<img id="preview" />
+
+<br><br>
+<button onclick="downloadImage()">Download</button>
 
 <script src="script.js"></script>
 </body>
