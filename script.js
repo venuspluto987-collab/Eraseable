@@ -1,5 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const preview = document.getElementById("preview");
 
 let drawing = false;
 let img = new Image();
@@ -13,13 +14,16 @@ document.getElementById("upload").addEventListener("change", function(e) {
             canvas.width = img.width;
             canvas.height = img.height;
 
+            // Draw original image
             ctx.drawImage(img, 0, 0);
 
-            // Add overlay layer
+            // Add overlay
             ctx.fillStyle = "gray";
             ctx.globalAlpha = 0.9;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.globalAlpha = 1;
+
+            updatePreview(); // show initial state
         };
         img.src = event.target.result;
     };
@@ -27,10 +31,14 @@ document.getElementById("upload").addEventListener("change", function(e) {
     reader.readAsDataURL(file);
 });
 
-// Erase logic
+// Start / stop drawing
 canvas.addEventListener("mousedown", () => drawing = true);
-canvas.addEventListener("mouseup", () => drawing = false);
+canvas.addEventListener("mouseup", () => {
+    drawing = false;
+    updatePreview(); // update after erase
+});
 
+// Erase
 canvas.addEventListener("mousemove", function(e) {
     if (!drawing) return;
 
@@ -44,10 +52,16 @@ canvas.addEventListener("mousemove", function(e) {
     ctx.fill();
 });
 
+// 🔥 Update preview image
+function updatePreview() {
+    const dataURL = canvas.toDataURL("image/png");
+    preview.src = dataURL;
+}
+
 // Download
 function downloadImage() {
     const link = document.createElement("a");
     link.download = "edited.png";
-    link.href = canvas.toDataURL();
+    link.href = canvas.toDataURL("image/png");
     link.click();
 }
